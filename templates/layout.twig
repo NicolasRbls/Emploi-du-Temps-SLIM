@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <title>{% block title %}My App{% endblock %}</title>
     <link rel="stylesheet" href="/styles.css">
+
+
+    <script>
+    function validateForm(event, formId) {
+        const form = document.getElementById(formId);
+        const username = form.querySelector("#username").value;
+        const password = form.querySelector("#password").value;
+
+        if (username.trim() === "" || password.trim() === "") {
+            event.preventDefault();
+            alert("Veuillez remplir tous les champs.");
+        }
+    }
+    </script>
+
 </head>
 <body>
     <header>

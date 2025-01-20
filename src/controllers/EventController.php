@@ -18,13 +18,46 @@ class EventController
         $pdo = getDatabaseConnection();
         $stmt = $pdo->prepare("SELECT * FROM events WHERE user_id = ?");
         $stmt->execute([$_SESSION['user_id']]);
-        $events = $stmt->fetchAll();
+        $events = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $this->twig->render($response, 'events.twig', ['events' => $events]);
+        // Configurer IntlDateFormatter
+        $formatter = new \IntlDateFormatter(
+            'fr_FR',
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::NONE
+        );
+        $formatter->setPattern('EEEE'); // Format pour le jour de la semaine
+
+        // Organiser les événements par jour de la semaine
+        $organizedEvents = [
+            'Lundi' => [],
+            'Mardi' => [],
+            'Mercredi' => [],
+            'Jeudi' => [],
+            'Vendredi' => [],
+            'Samedi' => [],
+            'Dimanche' => []
+        ];
+
+        foreach ($events as $event) {
+            $dayOfWeek = ucfirst($formatter->format(new \DateTime($event['event_date'])));
+            if (isset($organizedEvents[$dayOfWeek])) {
+                $organizedEvents[$dayOfWeek][] = $event;
+            }
+        }
+
+        return $this->twig->render($response, 'events.twig', [
+            'events' => $organizedEvents
+        ]);
     }
 
     public function addEvent($request, $response)
     {
+        if (!isset($_SESSION['user_id'])) {
+            // Redirection si l'utilisateur n'est pas connecté
+            return $response->withHeader('Location', '/login')->withStatus(302);
+        }
+
         $data = $request->getParsedBody();
         $title = $data['title'];
         $description = $data['description'];

@@ -1,0 +1,47 @@
+{% extends "layout.twig" %}
+
+{% block title %}Mes Événements{% endblock %}
+
+{% block content %}
+    <h1>Mes Événements</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Lundi</th>
+                <th>Mardi</th>
+                <th>Mercredi</th>
+                <th>Jeudi</th>
+                <th>Vendredi</th>
+                <th>Samedi</th>
+                <th>Dimanche</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for day in ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'] %}
+                    <td>
+                        {% if events[day] is not empty %}
+                            {% for event in events[day] %}
+                                <p><strong>{{ event.title }}</strong>: {{ event.description }}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>Aucun événement</p>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Ajouter un Événement</h2>
+    <form action="/add-event" method="POST">
+        <label for="title">Titre :</label>
+        <input type="text" id="title" name="title" required>
+        <label for="description">Description :</label>
+        <input type="text" id="description" name="description" required>
+        <label for="event_date">Date :</label>
+        <input type="date" id="event_date" name="event_date" required>
+        <button type="submit">Ajouter</button>
+    </form>
+{% endblock %}

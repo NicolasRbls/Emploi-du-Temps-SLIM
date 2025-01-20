@@ -2,7 +2,7 @@
     "name": "nicolas/emploi-temps",
     "description": "Faire un projet SLIM en plus pour s'entrainer",
     "require": {
-        "slim/slim": "^4.12",
+        "slim/slim": "^4.14",
         "slim/psr7": "^1.7",
         "slim/twig-view": "^3.4",
         "php-di/php-di": "^7.0"
@@ -16,4 +16,3 @@
     },
     "minimum-stability": "stable"
 }
-
