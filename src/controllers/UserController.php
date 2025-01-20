@@ -64,4 +64,11 @@ class UserController
 
         return $response->withHeader('Location', '/login')->withStatus(302);
     }
+
+    public function logout($request, $response)
+    {
+        session_destroy(); // Détruit la session
+        return $response->withHeader('Location', '/login')->withStatus(302); // Redirige vers la page de connexion
+    }
+
 }

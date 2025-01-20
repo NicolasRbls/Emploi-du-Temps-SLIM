@@ -41,6 +41,15 @@ return function (App $app) {
     $app->post('/login', [$userController, 'login']);
 
     // Routes pour les événements
-    $app->get('/events', [$eventController, 'listEvents']);
+    $app->get('/events[/{week}]', [$eventController, 'listEvents']);
     $app->post('/add-event', [$eventController, 'addEvent']);
+
+    $app->get('/logout', function ($request, $response) {
+        // Détruire la session
+        session_destroy();
+    
+        // Rediriger vers la page d'accueil ou de connexion
+        return $response->withHeader('Location', '/')->withStatus(302);
+    });
+    
 };

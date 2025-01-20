@@ -1,6 +1,36 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-    <h1>Bienvenue</h1>
-    <p>Page d'accueil de l'application</p>
+<div class="retro-container">
+    <div class="retro-header-container">
+        <h1 class="retro-title">Bienvenue sur Mon Emploi du Temps</h1>
+        <p class="retro-subtitle">
+            Gérez vos événements et votre emploi du temps de manière simple et efficace.
+        </p>
+    </div>
+
+    <div class="retro-home-content">
+        <div class="retro-feature-card">
+            <h2>Planifiez vos événements</h2>
+            <p>Ajoutez, visualisez et modifiez vos événements pour organiser votre semaine.</p>
+        </div>
+        <div class="retro-feature-card">
+            <h2>Navigation intuitive</h2>
+            <p>Parcourez votre emploi du temps par semaine et consultez vos activités passées ou à venir.</p>
+        </div>
+        <div class="retro-feature-card">
+            <h2>Conçu pour vous</h2>
+            <p>Une interface rétro et moderne qui s’adapte à tous vos besoins quotidiens.</p>
+        </div>
+    </div>
+
+    <div class="retro-actions">
+        {% if session.user_id is defined %}
+            <a href="/events" class="retro-button">Voir Mes Événements</a>
+        {% else %}
+            <a href="/login" class="retro-button">Connexion</a>
+            <a href="/register" class="retro-button">Inscription</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

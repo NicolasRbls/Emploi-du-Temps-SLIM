@@ -11,6 +11,9 @@ use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use Slim\Middleware\ErrorMiddleware;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -36,6 +39,16 @@ $twig = $container->get('view');
 
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
+
+// Middleware pour injecter les données de session dans Twig
+$app->add(function ($request, $handler) use ($twig) {
+    // Ajouter les variables de session globales dans Twig
+    $twig->getEnvironment()->addGlobal('session', $_SESSION);
+
+    // Continuer avec la requête
+    $response = $handler->handle($request);
+    return $response;
+});
 
 // Include Routes
 (require __DIR__ . '/../src/routes.php')($app);

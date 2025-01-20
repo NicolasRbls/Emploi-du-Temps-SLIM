@@ -2,37 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}My App{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}App{% endblock %}</title>
+    <!-- Retro CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/retro.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="/styles.css">
-
-
-    <script>
-    function validateForm(event, formId) {
-        const form = document.getElementById(formId);
-        const username = form.querySelector("#username").value;
-        const password = form.querySelector("#password").value;
-
-        if (username.trim() === "" || password.trim() === "") {
-            event.preventDefault();
-            alert("Veuillez remplir tous les champs.");
-        }
-    }
-    </script>
-
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            {% if not session.user_id %}
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
-            {% else %}
-                <a href="/events">My Events</a>
-            {% endif %}
+    <header class="retro-header">
+        <div class="branding">
+            <a href="/" class="retro-link retro-title">
+                🎲 Mon Emploi du Temps
+            </a>
+        </div>
+        <nav class="retro-nav">
+            <ul class="retro-nav-list">
+                {% if session.user_id is defined %}
+                    <li class="retro-nav-item">
+                        <a href="/events" class="retro-link">
+                            📅 Mes Événements
+                        </a>
+                    </li>
+                    <li class="retro-nav-item">
+                        <a href="/logout" class="retro-link">
+                            🚪 Déconnexion
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="retro-nav-item">
+                        <a href="/login" class="retro-link">
+                            🔐 Connexion
+                        </a>
+                    </li>
+                    <li class="retro-nav-item">
+                        <a href="/register" class="retro-link">
+                            👤 Inscription
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
         </nav>
     </header>
-    <main>
+    <main class="retro-main">
         {% block content %}{% endblock %}
     </main>
 </body>

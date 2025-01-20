@@ -3,45 +3,68 @@
 {% block title %}Mes Événements{% endblock %}
 
 {% block content %}
-    <h1>Mes Événements</h1>
+<div class="retro-container">
+    <h1 class="retro-title">Mes Événements</h1>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Lundi</th>
-                <th>Mardi</th>
-                <th>Mercredi</th>
-                <th>Jeudi</th>
-                <th>Vendredi</th>
-                <th>Samedi</th>
-                <th>Dimanche</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for day in ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'] %}
-                    <td>
-                        {% if events[day] is not empty %}
-                            {% for event in events[day] %}
-                                <p><strong>{{ event.title }}</strong>: {{ event.description }}</p>
-                            {% endfor %}
-                        {% else %}
-                            <p>Aucun événement</p>
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
+    <!-- Navigation entre les semaines -->
+    <div class="retro-navigation">
+        <a href="/events/{{ previousWeek }}" class="retro-button">
+            ◀ Semaine précédente
+        </a>
+        <span class="retro-week-label">
+            Semaine du {{ events|keys|first|date('d/m/Y') }} au {{ events|keys|last|date('d/m/Y') }}
+        </span>
+        <a href="/events/{{ nextWeek }}" class="retro-button">
+            Semaine suivante ▶
+        </a>
+    </div>
 
-    <h2>Ajouter un Événement</h2>
-    <form action="/add-event" method="POST">
-        <label for="title">Titre :</label>
-        <input type="text" id="title" name="title" required>
-        <label for="description">Description :</label>
-        <input type="text" id="description" name="description" required>
-        <label for="event_date">Date :</label>
-        <input type="date" id="event_date" name="event_date" required>
-        <button type="submit">Ajouter</button>
-    </form>
+    <!-- Tableau des événements -->
+    <div class="retro-table-container">
+        <table class="retro-table">
+            <thead>
+                <tr>
+                    {% for date, day in events %}
+                        <th>{{ day.label }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for date, day in events %}
+                        <td>
+                            {% if day.events is not empty %}
+                                {% for event in day.events %}
+                                    <div class="retro-card">
+                                        <strong>{{ event.title }}</strong>
+                                        <p>{{ event.description }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="retro-empty">Aucun événement</p>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulaire pour ajouter un événement -->
+    <div class="retro-form-container">
+        <h2>Ajouter un Événement</h2>
+        <form action="/add-event" method="POST">
+            <label for="title">Titre :</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="description">Description :</label>
+            <input type="text" id="description" name="description" required>
+            
+            <label for="event_date">Date :</label>
+            <input type="date" id="event_date" name="event_date" required>
+            
+            <button type="submit" class="retro-button">Ajouter</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
